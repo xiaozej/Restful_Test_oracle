@@ -1,0 +1,105 @@
+搜索相关镜像
+sudo docker search tomcat:8
+
+下载镜像
+sudo docker pull tomcat:8
+
+查看下载的镜像
+sudo docker images
+
+根据镜像开启容器
+-d: 后台运行容器，并返回容器ID；
+-i: 以交互模式运行容器，通常与 -t 同时使用；
+-t: 为容器重新分配一个伪输入终端，通常与 -i 同时使用；
+–name用于指定容器的名称；
+-p 8081:8080 用于将容器内的8080端口映射到主机的8080端口，你也可以换成其他本机端口
+sudo docker run -d -p 8080:8080 tomcat
+
+查看容器
+-a :显示所有的容器，包括未运行的
+-l :显示最近创建的容器
+sudo　docker ps　
+
+将打包好的项目放进容器目录
+sudo docker cp /home/ji/Desktop/Spring4MvcRestMaven.war e9c76ef26217:/usr/local/tomcat/webapps/
+
+开启和停止容器
+sudo docker start e9c76ef26217
+sudo docker stop e9c76ef26217
+sudo docker restart e9c76ef26217
+
+本地浏览器测试项目
+
+关闭容器，将容器打包成镜像
+OPTIONS说明：
+-a :提交的镜像作者；
+-c :使用Dockerfile指令来创建镜像；
+-m :提交时的说明文字；
+-p :在commit时，将容器暂停
+sudo docker commit -a "jixiaoze" -m "my first test" e9c76ef26217 testrestful:1
+
+7.上传至你的dockerhub
+
+使用您的Docker ID登录
+如果您没有Docker帐户，请在cloud.docker.com注册一个 。记下你的用户名。
+登录到本地计算机上的Docker公共注册表。
+docker login
+
+标记镜像
+将本地映像与注册表上的存储库相关联的符号是 username/repository:tag。该标签是可选的，但推荐使用，因为这是注册管理机构为Docker镜像提供版本的机制。给存储库并为上下文标记有意义的名称，例如 get-started:part2。这将把图像放入get-started存储库并标记为part2。
+现在，把它们放在一起来标记镜像。运行docker tag image您的用户名，存储库和标签名称，以便镜像将上传到您想要的目的地。该命令的语法是：
+docker tag image username/repository:tag
+
+例如：
+docker tag friendlyhello john/get-started:part2
+
+运行docker镜像以查看新标记的镜像。（你也可以用docker image ls。）
+docker images
+REPOSITORY TAG IMAGE ID CREATED SIZE
+friendlyhello latest d9e555c53008 3 minutes ago 195MB
+john/get-started part2 d9e555c53008 3 minutes ago 195MB
+python 2.7-slim 1c7128a655f6 5 days ago 183MB
+…
+
+发布镜像
+将您的标记镜像上传到存储库：
+docker push username/repository:tag
+
+----------------------------------------------------------------------------------------------
+－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+配置一个纯净的镜像
+3.将jdk，tomcat的安装包和web项目上传至镜像中
+docker cp /usr/local/jdk安装包 容器名:容器地址
+docker cp /usr/local/tomcat安装包 容器名:容器地址
+docker cp /usr/local/web项目 容器名:容器地址
+
+进入容器并操作
+-------------------------
+通过命令
+docker attach 容器名或id
+进入容器中
+安装jdk和tomcat的步骤和在linux中安装步骤一致，你可以把容器当成一个linux虚拟机，
+之后启动tomcat服务
+------------------------------
+进入容器内部  容器内部有一些设置文件 只能通过这种方式进入 
+交互式的进入tomcat容器。
+“docker exec”命令表示在运行中的容器中开启一个新的进程。
+进入容器内部  容器内部有一些设置文件 只能通过这种方式进入
+
+docker exec -it ea422adc42c5 bash
+#进入webapps文件夹下查看一下存在的war包
+cd webapps
+
+然后我们发现xml文件是无法直接用vi命令编辑的。
+这里提供三种方法：
+1.-v 挂载 docker run -v localConfigFile:/containerPath
+2.exec 进入容器修改 docker exec -it containerID bash 可以安装vi进行修改
+3.cp 可以将宿主机的配置文件拷贝到container中， docker cp host/path:/container/path
+
+
+
+
+
+
+
+

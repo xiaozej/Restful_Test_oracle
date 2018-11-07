@@ -1,0 +1,4 @@
+com/oraclews/test/oraclewstest/configuration/CORSFilter.class
+com/oraclews/test/oraclewstest/configuration/OracleTestConfiguration.class
+com/oraclews/test/oraclewstest/configuration/OracleTestInitializer.class
+com/oraclews/test/oraclewstest/controller/Controller.class
